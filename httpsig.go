@@ -11,6 +11,7 @@ import (
 	"crypto"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -267,6 +268,23 @@ type Verifier interface {
 	Verify(pKey crypto.PublicKey, algo Algorithm) error
 }
 
+// use it in fasthttp
+type IRequest struct {
+	Header http.Header
+	Host   string
+	Method string
+	URL    *url.URL
+}
+
+func NewIRequest(r *http.Request) *IRequest {
+	return &IRequest{
+		Header: r.Header,
+		Host:   r.Host,
+		Method: r.Method,
+		URL:    r.URL,
+	}
+}
+
 const (
 	// host is treated specially because golang may not include it in the
 	// request header map on the server side of a request.
@@ -277,7 +295,7 @@ const (
 // Signature parameters are not present in any headers, are present in more than
 // one header, are malformed, or are missing required parameters. It ignores
 // unknown HTTP Signature parameters.
-func NewVerifier(r *http.Request) (Verifier, error) {
+func NewVerifier(r *IRequest) (Verifier, error) {
 	h := r.Header
 	if _, hasHostHeader := h[hostHeader]; len(r.Host) > 0 && !hasHostHeader {
 		h[hostHeader] = []string{r.Host}

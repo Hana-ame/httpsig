@@ -269,7 +269,7 @@ func requestTargetNotPermitted(b *bytes.Buffer) error {
 	return fmt.Errorf("cannot sign with %q on anything other than an http request", RequestTarget)
 }
 
-func addRequestTarget(r *http.Request) func(b *bytes.Buffer) error {
+func addRequestTarget(r *IRequest) func(b *bytes.Buffer) error {
 	return func(b *bytes.Buffer) error {
 		b.WriteString(RequestTarget)
 		b.WriteString(headerFieldDelimiter)
