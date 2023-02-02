@@ -505,7 +505,8 @@ func TestNewVerifier(t *testing.T) {
 				t.Fatalf("%s", err)
 			}
 			// Test verification
-			v, err := NewVerifier(req)
+			ir := NewIRequest(req)
+			v, err := NewVerifier(ir)
 			if err != nil {
 				t.Fatalf("%s", err)
 			}
@@ -727,7 +728,8 @@ func Test_Verifying_HTTP_Messages_AppendixC(t *testing.T) {
 			setDigest(r)
 			r.Header["Authorization"] = []string{test.signature}
 
-			v, err := NewVerifier(r)
+			ir := NewIRequest(r)
+			v, err := NewVerifier(ir)
 			if err != nil {
 				t.Fatalf("error creating verifier: %s", err)
 			}
@@ -780,7 +782,8 @@ func TestVerifyingEd25519(t *testing.T) {
 			setDigest(r)
 			r.Header["Authorization"] = []string{test.signature}
 
-			v, err := NewVerifier(r)
+			ir := NewIRequest(r)
+			v, err := NewVerifier(ir)
 			if err != nil {
 				t.Fatalf("error creating verifier: %s", err)
 			}

@@ -104,7 +104,8 @@ func (m *macSigner) signSignature(pKey crypto.PrivateKey, s string) (string, err
 }
 
 func (m *macSigner) signatureString(r *http.Request) (string, error) {
-	return signatureString(r.Header, m.headers, addRequestTarget(r), m.created, m.expires)
+	ir := NewIRequest(r)
+	return signatureString(r.Header, m.headers, addRequestTarget(ir), m.created, m.expires)
 }
 
 func (m *macSigner) signatureStringResponse(r http.ResponseWriter) (string, error) {
@@ -172,7 +173,8 @@ func (a *asymmSigner) signSignature(pKey crypto.PrivateKey, s string) (string, e
 }
 
 func (a *asymmSigner) signatureString(r *http.Request) (string, error) {
-	return signatureString(r.Header, a.headers, addRequestTarget(r), a.created, a.expires)
+	ir := NewIRequest(r)
+	return signatureString(r.Header, a.headers, addRequestTarget(ir), a.created, a.expires)
 }
 
 func (a *asymmSigner) signatureStringResponse(r http.ResponseWriter) (string, error) {
