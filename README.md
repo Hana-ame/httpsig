@@ -29,7 +29,7 @@ signing of hash schemes. Its goals are:
 
 Signing a request or response requires creating a new `Signer` and using it:
 
-```
+```go
 func sign(privateKey crypto.PrivateKey, pubKeyId string, r *http.Request) error {
 	prefs := []httpsig.Algorithm{httpsig.RSA_SHA512, httpsig.RSA_SHA256}
 	digestAlgorithm := DigestSha256
@@ -50,7 +50,7 @@ func sign(privateKey crypto.PrivateKey, pubKeyId string, r *http.Request) error 
 `Signer`s are not safe for concurrent use by goroutines, so be sure to guard
 access:
 
-```
+```go
 type server struct {
 	signer httpsig.Signer
 	mu *sync.Mutex
@@ -81,7 +81,7 @@ Verifying requires an application to use the `pubKeyId` to both retrieve the key
 needed for verification as well as determine the algorithm to use. Use a
 `Verifier`:
 
-```
+```go
 func verify(r *http.Request) error {
 	verifier, err := httpsig.NewVerifier(r)
 	if err != nil {
